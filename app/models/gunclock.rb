@@ -1,0 +1,2 @@
+class Gunclock < ApplicationRecord
+end

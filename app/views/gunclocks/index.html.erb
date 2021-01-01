@@ -1,0 +1,50 @@
+<h1>Gunclocks#index</h1>
+
+<!-- for kaminari -->
+<%= page_entries_info @gunclocks %> 
+<!-- for kaminari -->
+
+<div data-turbolinks="false">
+<table border="1" cellspacing="0">
+  <thead>
+   <tr>
+    <th>id</th>
+    <th>CreateTime</th>
+    <th>Size</th>
+    <th>Color</th>
+    <th colspan="3">Action</th>
+   </tr>
+  </thead>
+
+  <tbody>
+   <% @gunclocks.each do |gunclock| %>
+    <tr>
+     <td align="right"><%= gunclock.id %></td>
+     <td><%= gunclock.created_at %></td>
+     <td align="right"><%= gunclock.size %></td>
+     <td bgcolor="<%= gunclock.color %>"><%= gunclock.color %></td>
+     <td><%= link_to 'Show', 'show/' + gunclock.id.to_s %></td>
+<!--     <td>< link_to 'Show', 'show/#{gunclock.id}' %></td>  -->
+<!--     <td><   link_to 'Show', gunclocks %></td>  -->
+<!--    <td>< link_to 'Show', gunclocks_path(gunclock) %></td>  -->
+<!-- <td><   link_to 'Show', gunclock_show_path(gunclock) %></td>  -->
+<!--     <td>< link_to 'Delete', gunclocks_path(gunclock), :method => :delete, data: { confirm: 'Are you sure?' } %></td> -->
+     <td><%= link_to 'Delete', '/gunclocks/' + gunclock.id.to_s, :method => :delete, data: { confirm: 'Are you sure?' } %></td>
+<!--     <td><   link_to 'Delete', 'delete/' + gunclock.id.to_s %></td>  -->
+     <td><%= link_to 'Edit', 'edit/' + gunclock.id.to_s %></td>
+    </tr>
+   <% end %>
+  </tbody>
+
+</table>
+
+<%= link_to 'New GunClock', :gunclocks_new %>
+</div>
+
+<p>
+
+<!-- for kaminari -->
+<%= paginate @gunclocks %>
+<!-- for kaminari -->
+
+

@@ -1,0 +1,40 @@
+<h1>Gunclocks#TwitterSearch</h1>
+
+<style type="text/css">
+body {
+background-color: #ccffff
+}
+</style>
+
+
+<hr>
+
+<h2>Twitter trend Words</h2>
+<pre>
+<% c=0 %>
+<% @tweetTrendStrings.each do |trendString| %>
+<% c+=1 %>
+<%= sprintf("%02d", c) %>. <%= trendString.gsub(@trendWord, "<b><font color=#ff0000>" + @trendWord + "</font></b>").html_safe %>
+<% end %>
+</pre>
+
+<hr>
+
+<h2>Twitter Search (trendWord = <b><font color=#ff0000><%= @trendWord %></font></b>)</h2>
+<table border="1">
+<% @tweetMessages.each do |t| %>
+ <tr>
+  <td><img src="<%= t.icon_url %>"></td>
+  <!-- td><%= simple_format(t.message.gsub(/(\r\n|\r|\n)/, "<br />")) %></td> -->
+  <td><%= simple_format(h(t.message.gsub(/,/, "\n"))).gsub(@trendWord, "<b><font color=#ff0000>" + @trendWord + "</font></b>").html_safe %></td>
+ </tr>
+<% end %>
+</table>
+
+<hr>
+
+<!--
+<a href="https://gunclocks-rails.herokuapp.com/gunclocks/kafkaConsumer">kafka Consumer (Ruby on rails)</a><p>
+<a href="https://gunclocks-django.herokuapp.com/gunclocks/kafkaConsumer/">kafka Consumer (Python + Django)</a><p>
+-->
+

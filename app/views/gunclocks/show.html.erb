@@ -1,0 +1,41 @@
+<h1>GunClock (Ruby on Rails)</h1>
+<hr>
+
+<%
+require File.dirname(__FILE__) + "/GunClock"
+
+gunClock = GunClock.new(@gunclock[:size].to_i)
+gunClockString = gunClock.toString()
+#gunClockString = "abcde"
+%>
+
+<table>
+<tr><td bgcolor="<%= @gunclock[:color] %>">
+<!-- <pre style="background-color:<%= @gunclock[:color] %>;"> -->
+<pre><%= gunClockString %></pre>
+</td></tr>
+</table>
+
+
+<table border="1" cellspacing="0">
+  <thead>
+   <tr>
+    <th>id</th>
+    <th>CreateTime</th>
+    <th>Size</th>
+    <th>Color</th>
+   </tr>
+  </thead>
+
+<hr>
+
+  <tbody>
+   <tr>
+    <td align="right"><%= @gunclock[:id] %></td>
+    <td align="right"><%= @gunclock[:created_at] %></td>
+    <td align="right"><%= @gunclock[:size] %></td>
+    <td bgcolor="<%= @gunclock[:color] %>"><%= @gunclock[:color] %></td>
+   </tr>
+  </tbody>
+</table>
+

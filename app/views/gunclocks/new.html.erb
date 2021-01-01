@@ -1,0 +1,12 @@
+<h1>Gunclocks#new</h1>
+<%= form_for Gunclock.new do |f| %>
+ <%= f.label :size %>
+<!-- <%= f.text_field :size %> -->
+ 
+<!-- <%= f.select :size, @gunclocks.map{|g| [g.size, g.size]} %> -->
+ <%= f.number_field :size, min: 5, max:99 %> (5-99) <br>
+
+ <%= f.label :color %>
+ <%= f.text_field :color, class:'colorpicker' %> <br>
+ <%= f.submit %>
+<% end %>

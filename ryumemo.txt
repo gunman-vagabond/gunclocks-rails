@@ -1,0 +1,166 @@
+■rails g 
+
+C:\Sites\heroku\rails\rails-myapp3-postgresql>rails g controller gunclocks index show
+      create  app/controllers/gunclocks_controller.rb
+       route  get 'gunclocks/show'
+       route  get 'gunclocks/index'
+      invoke  erb
+      create    app/views/gunclocks
+      create    app/views/gunclocks/index.html.erb
+      create    app/views/gunclocks/show.html.erb
+      invoke  test_unit
+      create    test/controllers/gunclocks_controller_test.rb
+      invoke  helper
+      create    app/helpers/gunclocks_helper.rb
+      invoke    test_unit
+      invoke  assets
+      invoke    coffee
+      create      app/assets/javascripts/gunclocks.coffee
+      invoke    scss
+      create      app/assets/stylesheets/gunclocks.scss
+
+C:\Sites\heroku\rails\rails-myapp3-postgresql>
+
+■rails g で new する view を作る
+rails g controller gunclocks new
+
+■モデルを作る
+>rails g model gunclock id:integer size:integer  (★id:もいらない)
+※sqlite3がロードされていない、との、エラー
+  → Gemfile に develop のときに、sqlite3とする、記述を追加
+------------------------
+group :development do
+  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
+  gem 'web-console', '>= 3.3.0'
+  gem 'sqlite3'   #for local (ryuba)     ★追加
+end
+------------------------
+■migrate
+> rake db:migrate
+> git add -A
+> git commit -m "xxxxx"
+> git push heroku master
+> heroku run rake db:migrate
+
+■heroku の postgresql 設定(addon)
+C:\Sites\heroku\rails\rails-myapp3-postgresql>heroku addons:add heroku-postgresql
+Creating heroku-postgresql on rails-myapp3-postgresql... free
+Database has been created and is available
+ ! This database is empty. If upgrading, you can transfer
+ ! data from another database with pg:copy
+Created postgresql-triangular-40337 as DATABASE_URL
+Use heroku addons:docs heroku-postgresql to view documentation
+
+■heroku の db:migrate
+C:\Sites\heroku\rails\rails-myapp3-postgresql>heroku run rake db:migrate
+Running rake db:migrate on rails-myapp3-postgresql... up, run.8811 (Free)
+D, [2017-06-03T15:52:54.269771 #4] DEBUG -- :    (20.9ms)  CREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)
+D, [2017-06-03T15:52:54.297646 #4] DEBUG -- :    (11.8ms)  CREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)
+D, [2017-06-03T15:52:54.305210 #4] DEBUG -- :    (2.3ms)  SELECT pg_try_advisory_lock(4402539135346172415);
+D, [2017-06-03T15:52:54.321485 #4] DEBUG -- :   ActiveRecord::SchemaMigration Load (1.8ms)  SELECT "schema_migrations".* FROM "schema_migrations"
+I, [2017-06-03T15:52:54.335255 #4]  INFO -- : Migrating to CreateGunclocks (20170603154733)
+D, [2017-06-03T15:52:54.338579 #4] DEBUG -- :    (1.1ms)  BEGIN
+== 20170603154733 CreateGunclocks: migrating ==================================
+-- create_table(:gunclocks)
+D, [2017-06-03T15:52:54.351863 #4] DEBUG -- :    (10.4ms)  CREATE TABLE "gunclocks" ("id" serial primary key, "size" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)
+   -> 0.0132s
+== 20170603154733 CreateGunclocks: migrated (0.0133s) =========================
+
+D, [2017-06-03T15:52:54.377293 #4] DEBUG -- :   SQL (4.4ms)  INSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"  [["version", "20170603154733"]]
+D, [2017-06-03T15:52:54.382003 #4] DEBUG -- :    (3.1ms)  COMMIT
+D, [2017-06-03T15:52:54.392143 #4] DEBUG -- :   ActiveRecord::InternalMetadata Load (1.5ms)  SELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2  [["key", "environment"], ["LIMIT", 1]]
+D, [2017-06-03T15:52:54.403756 #4] DEBUG -- :    (1.1ms)  BEGIN
+D, [2017-06-03T15:52:54.406849 #4] DEBUG -- :   SQL (1.4ms)  INSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"  [["key", "environment"], ["value", "production"], ["created_at", "2017-06-03 15:52:54.404263"], ["updated_at", "2017-06-03 15:52:54.404263"]]
+D, [2017-06-03T15:52:54.409238 #4] DEBUG -- :    (1.9ms)  COMMIT
+D, [2017-06-03T15:52:54.410816 #4] DEBUG -- :    (1.2ms)  SELECT pg_advisory_unlock(4402539135346172415)
+
+■new.html.rb
+
+<h1>Gunclocks#new</h1>
+<%= form_for Gunclock.new do |f| %>
+ <%= f.label :size %>
+ <%= f.text_field :size %>
+ <%= f.submit %>
+<% end %>
+
+■config/routes.rb
+
+  get 'gunclocks/new'
+  post 'gunclocks' => 'gunclocks#create'
+
+■gunclocks_controller.rb
+  def create
+    @gunclock = Gunclock.new
+    @gunclock.size = params[:gunclock][:size]
+    @gunclock.save
+  end
+
+■項目の追加
+rails generate migration AddColorToGunclocks color:string
+                            ~~~~~任意の名前
+                                   ~~~~~~~~~model名
+
+rake db:migrate
+
+heroku run rake db:migrate
+
+■bootstrap-colorpicker.min
+
+https://mjolnic.com/bootstrap-colorpicker/  から zip ダウンロード
+
+vendor\assets\javascripts\bootstrap-colorpicker.min.js
+vendor\assets\stylesheets\bootstrap-colorpicker.min.css
+vendor\assets\stylesheets\bootstrap-colorpicker.min.css.map
+
+■kaminari
+Gemfileに
+gem 'kaminari'
+
+>bundle install
+
+ページの最初に
+<!-- for kaminari -->
+<%= page_entries_info @gunclocks %> 
+<!-- for kaminari -->
+
+ページの最後に
+<!-- for kaminari -->
+<%= paginate @gunclocks %>
+<!-- for kaminari -->
+
+
+---------------
+  def index
+#    @gunclocks = Gunclock.all
+    @gunclocks = Gunclock.page(params[:page])
+  end
+---------------
+
+
+C:\Sites\heroku\rails\rails-myapp3-postgresql>rails g kaminari:config
+      create  config/initializers/kaminari_config.rb
+
+
+■rubyノウハウ
+- 配列の扱い。リファレンス。わかりやすい。
+  http://ref.xaio.jp/ruby/classes/array
+
+- アクセサメソッド
+  http://www.rubylife.jp/ini/class/index6.html
+----------------
+定義式	機能
+attr_reader :変数名	参照が可能
+attr_writer :変数名	更新が可能
+attr_accessor :変数名	参照と更新が可能
+----------------
+を定義しておくと「.」で変数の参照、更新が可能となる。
+
+
+- インスタンス変数(@)
+、クラス変数(@@)
+  あと、クラスインスタンス変数(@)というものものある
+http://qiita.com/mogulla3/items/cd4d6e188c34c6819709
+
+■json (Webサービス)
+- http://ntaku.hateblo.jp/entry/20100911/1284193050
+

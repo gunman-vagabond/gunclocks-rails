@@ -1,0 +1,71 @@
+<h1>Gunclocks#tweetGunclock</h1>
+
+<hr>
+
+<h2>Twitter trend Words</h2>
+<pre>
+<% c=0 %>
+<% @tweetTrendStrings.each do |trendString| %>
+<% c+=1 %>
+<%= sprintf("%02d", c) %>. <%= trendString.gsub(@trendWord, "<b><font color=#ff0000>" + @trendWord + "</font></b>").html_safe %>
+<% end %>
+</pre>
+
+<hr>
+<h2>Twitter Search & <b><font color=#00ff00>DateTime</font></b> Guess (trendWord = <b><font color=#ff0000><%= @trendWord %></font></b>)</h2>
+<pre>
+<% @tweetMessages.each do |t| %>
+  <%= t.message.sub(/\n[\n\s\S]+$/,'...').gsub(/(....-..-.. ..:..:.. \+....)/, '<b><font color=#00ff00>\1</font></b>').gsub(@trendWord, "<b><font color=#ff0000>" + @trendWord + "</font></b>").html_safe %>
+<% end %>
+</pre>
+
+
+
+<hr>
+<center>
+↓
+<table border="1">
+<tr><td>
+Guessed Current Time : <b><font color=#00ff00><%= @guessedCurrentTime %></font></b>
+</td></tr>
+</table>
+↓
+</center>
+
+<hr>
+
+
+<h2>GunClock (Guessed Current Time : <b><font color=#00ff00><%= @guessedCurrentTime %></font></b>
+)</h2>
+
+<%
+require File.dirname(__FILE__) + "/GunClock"
+
+puts "@guessedCurrentTime = " + @guessedCurrentTime
+puts "@guessedCurrentTime.sub = " + @guessedCurrentTime.sub(/^.* (..:..).*$/, '\1')
+
+gunClock = GunClock.new(18, @guessedCurrentTime.sub(/^.* (..:..).*$/, '\1'))
+gunClockString = gunClock.toString()
+%>
+
+<table>
+<tr><td bgcolor="#00ff00"">
+<pre><%= gunClockString %></pre>
+</td></tr>
+</table>
+
+<hr>
+
+<h2>[[おまけ]]<br>Twitter Search (trendWord = <b><font color=#ff0000><%= @trendWord %></font></b>)</h2>
+<table border="1">
+<% @tweetMessages.each do |t| %>
+ <tr>
+  <td><img src="<%= t.icon_url %>"></td>
+  <!-- td><%= simple_format(t.message.gsub(/(\r\n|\r|\n)/, "<br />")) %></td> -->
+  <td><%= simple_format(h(t.message.gsub(/,/, "\n"))).gsub(@trendWord, "<b><font color=#ff0000>" + @trendWord + "</font></b>").html_safe %></td>
+ </tr>
+<% end %>
+</table>
+
+<hr>
+
