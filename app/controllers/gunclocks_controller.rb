@@ -195,8 +195,8 @@ class GunclocksController < ApplicationController
 
   def tweetGunclock
     client = Twitter::REST::Client.new do |config|
-        config.consumer_key        = "LiJHBkQwBsYG1wOygVLhClE8c"
-        config.consumer_secret     = "MwdSi0IFH0OMXyEipDcDrbLUInd7QIyf0I42UVSIdAOlr4EBzn"
+        config.consumer_key        = "xxxxxxxxxxxxxxxxxxxxxxxx"
+        config.consumer_secret     = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     end
     @trendWord = ""
     @tweetTrendStrings = []
@@ -239,13 +239,13 @@ class GunclocksController < ApplicationController
 #    OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
     client = Twitter::REST::Client.new do |config|
-        config.consumer_key        = "LiJHBkQwBsYG1wOygVLhClE8c"
-        config.consumer_secret     = "MwdSi0IFH0OMXyEipDcDrbLUInd7QIyf0I42UVSIdAOlr4EBzn"
+        config.consumer_key        = "xxxxxxxxxxxxxxxxxxxx"
+        config.consumer_secret     = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 # https://teratail.com/questions/4107
 # access_tokenを指定しないと、only authentication になって、API制限が増えるらしい
 # API回数が増えても、あまりうれしくないかな(180回/15分⇒450回/15分)
-#        config.access_token        = "884784626895433728-UKlkSjrtvN74XDeLaugCpVAx9x0sFfj"
-#        config.access_token_secret = "holhMSjmc3PzRLJlua8ssFMmMQDlnlzYYYG8hm0mxCnZ0"
+#        config.access_token        = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+#        config.access_token_secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     end
 
 #    brokers = ENV['CLOUDKARAFKA_BROKERS'].split(',')
